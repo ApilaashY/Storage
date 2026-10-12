@@ -1,0 +1,19 @@
+// use prisma-8
+
+model Box {
+  id          String @id
+  description String
+  position    Int
+  items       Item[]
+}
+
+model Item {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  position    Int
+  box         Box    @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  boxId       String
+
+  @@index([boxId])
+}

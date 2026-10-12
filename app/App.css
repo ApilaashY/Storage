@@ -1,0 +1,212 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 3rem;
+  }
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  aspect-ratio: 1 / 1;
+  padding: 1.25rem;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: rgba(127, 127, 127, 0.08);
+  border: 1px solid rgba(127, 127, 127, 0.25);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(127, 127, 127, 0.6);
+}
+
+.tile h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.tile ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.tile li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.more {
+  margin-top: auto;
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+.tile.dragging {
+  opacity: 0.4;
+}
+
+.tile-desc {
+  flex-shrink: 0;
+  line-height: 1.4;
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-new {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-style: dashed;
+  background: transparent;
+  cursor: default;
+}
+
+.tile-new:hover {
+  transform: none;
+}
+
+.tile-new input,
+.tile-new button {
+  width: 100%;
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+}
+
+.tile-new button {
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: Canvas;
+  color: CanvasText;
+  border-radius: 12px;
+}
+
+.modal h2 {
+  margin: 0 0 0.75rem;
+}
+
+.modal .item-list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+
+.item-list li {
+  cursor: grab;
+}
+
+.item-list li.dragging {
+  opacity: 0.4;
+}
+
+.item-list li span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.item-list .item-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-list .item-text small {
+  opacity: 0.6;
+}
+
+.item-list li .handle {
+  flex: none;
+  opacity: 0.5;
+}
+
+.item-list li button {
+  padding: 0.1rem 0.5rem;
+}
+
+.add-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-form input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+}
+
+.modal button {
+  font: inherit;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.form-error {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #d33;
+}
