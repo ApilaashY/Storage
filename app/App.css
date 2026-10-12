@@ -210,3 +210,33 @@
   font-size: 0.85rem;
   color: #d33;
 }
+
+.toolbar {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem 1rem 0;
+}
+
+@media (min-width: 768px) {
+  .toolbar {
+    padding: 2rem 3rem 0;
+  }
+}
+
+.toolbar button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.scanner-video {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: #000;
+}

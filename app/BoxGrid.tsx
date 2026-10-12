@@ -11,6 +11,8 @@ import {
   reorderItems,
 } from "./actions";
 import type { Box, BoxItem } from "./types";
+import QrScanner from "./QrScanner";
+import { downloadBoxQr } from "./qr";
 
 function generateBoxCode(existing: Box[]): string {
   let code: string;
@@ -38,6 +40,19 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
   const [newDescription, setNewDescription] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
+  const [scanning, setScanning] = useState(false);
+  const [scanError, setScanError] = useState("");
+
+  function handleScan(text: string): boolean {
+    const id = text.trim();
+    if (!boxesRef.current.some((b) => b.id === id)) {
+      setScanError("No box with that code");
+      return false;
+    }
+    setScanning(false);
+    setOpenId(id);
+    return true;
+  }
   // Reload from the database after a failed write so the UI doesn't drift.
   async function resync() {
     setBoxes(await getBoxes());
@@ -135,6 +150,16 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
 
   return (
     <>
+      <div className="toolbar">
+        <button
+          onClick={() => {
+            setScanError("");
+            setScanning(true);
+          }}
+        >
+          Scan QR
+        </button>
+      </div>
       <div className="grid">
         {boxes.map((box) => (
           <button
@@ -166,6 +191,14 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
           <h2>+ New Box</h2>
         </button>
       </div>
+
+      {scanning && (
+        <QrScanner
+          onScan={handleScan}
+          onClose={() => setScanning(false)}
+          error={scanError}
+        />
+      )}
 
       {creating && (
         <div className="overlay" onClick={() => setCreating(false)}>
@@ -265,6 +298,9 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
               />
               <button type="submit">Add</button>
             </form>
+            <button onClick={() => downloadBoxQr(openBox.id)}>
+              Download QR
+            </button>{" "}
             <button onClick={() => setOpenId(null)}>Close</button>
           </div>
         </div>
