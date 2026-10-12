@@ -43,6 +43,17 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
   const [scanning, setScanning] = useState(false);
   const [scanError, setScanError] = useState("");
 
+  const [query, setQuery] = useState("");
+  const needle = query.trim().toLowerCase();
+  const matchesOf = (box: Box) =>
+    box.items.filter(
+      (i) =>
+        i.name.toLowerCase().includes(needle) ||
+        i.description.toLowerCase().includes(needle),
+    );
+  const visibleBoxes = needle
+    ? boxes.filter((b) => matchesOf(b).length > 0)
+    : boxes;
   function handleScan(text: string): boolean {
     const id = text.trim();
     if (!boxesRef.current.some((b) => b.id === id)) {
@@ -160,8 +171,23 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
           Scan QR
         </button>
       </div>
+      <div className="toolbar">
+        <div className="search">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search items"
+            aria-label="Search items"
+          />
+          {query && (
+            <button aria-label="Clear search" onClick={() => setQuery("")}>
+              Clear
+            </button>
+          )}
+        </div>
+      </div>
       <div className="grid">
-        {boxes.map((box) => (
+        {visibleBoxes.map((box) => (
           <button
             key={box.id}
             className={`tile${dragBoxId === box.id ? " dragging" : ""}`}
@@ -177,13 +203,23 @@ export default function BoxGrid({ initialBoxes }: { initialBoxes: Box[] }) {
           >
             <h2>{box.id}</h2>
             {box.description && <p className="tile-desc">{box.description}</p>}
-            <ul>
-              {box.items.slice(0, 3).map((item) => (
-                <li key={item.id}>{item.name}</li>
-              ))}
-            </ul>
-            {box.items.length > 3 && (
-              <span className="more">+{box.items.length - 3} more</span>
+            {needle ? (
+              <ul className="matches">
+                {matchesOf(box).map((item) => (
+                  <li key={item.id}>{item.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <>
+                <ul>
+                  {box.items.slice(0, 3).map((item) => (
+                    <li key={item.id}>{item.name}</li>
+                  ))}
+                </ul>
+                {box.items.length > 3 && (
+                  <span className="more">+{box.items.length - 3} more</span>
+                )}
+              </>
             )}
           </button>
         ))}
