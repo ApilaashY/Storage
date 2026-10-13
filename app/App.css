@@ -86,25 +86,9 @@
   text-align: center;
   border-style: dashed;
   background: transparent;
-  cursor: default;
 }
 
-.tile-new:hover {
-  transform: none;
-}
-
-.tile-new input,
-.tile-new button {
-  width: 100%;
-  font: inherit;
-  padding: 0.4rem 0.6rem;
-  color: inherit;
-  background: transparent;
-  border: 1px solid rgba(127, 127, 127, 0.4);
-  border-radius: 8px;
-}
-
-.tile-new button {
+button:not(:disabled) {
   cursor: pointer;
 }
 
